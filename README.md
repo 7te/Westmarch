@@ -143,8 +143,10 @@ not by forcing them into permanent notes.
 - One file per note. One canonical file, referenced many times. No
   filesystem symlinks. A wikilink is the portable symlink.
 - Filename: `<id>-<slug>.md`
-  - `id`: `YYYYMMDDHHMM`, e.g. `202601010000`. Unique, sortable, stable.
-    Renaming the slug later does not change the id.
+  - `id`: `YYYYMMDDHHMM` in UTC, e.g. `202601010000`. Unique, sortable, stable.
+    Renaming the slug later does not change the id. See Timezone and
+    renaming below — UTC is the structure, local time is included
+    in the body only where it is relevant.
   - `slug`: lower-case, ASCII only, hyphens, no spaces. No non-ASCII in
     filenames (macOS NFD vs Linux/Windows NFC causes byte-different
     duplicates for accented characters).
@@ -250,6 +252,13 @@ Daily format is decided, not open, and not a setup choice:
   — for example, `202611040000` for 2026-11-04. Do not use the
   creation time as the daily id, or the same date could get two
   different ids. One date, one file, one id.
+- Daily id is the exception to the UTC rule, on purpose: a daily
+  note represents a local day, not a UTC moment, so its id is
+  derived from its local date, as above. Its UTC creation moment
+  may therefore fall on a different UTC date near midnight —
+  that is expected, not corruption, because the daily id is a
+  day-identifier, not a timestamp. General notes always use UTC
+  ids, see Timezone and renaming below.
 - If a daily file for that date already exists, append to it
   under the existing headings (What happened, Decisions made,
   Ideas to process), in chronological order, with a time if known.
@@ -263,6 +272,62 @@ Daily format is decided, not open, and not a setup choice:
   `type: daily`, but they are never direct hits for a topic query
   — only for a history / date query, or as provenance for a
   promoted note.
+
+## Timezone and renaming
+
+**Timezone: UTC is the structure, local time is context.**
+
+Ids and `created` / `updated` dates are always in UTC. UTC has no
+DST, no travel shift, no date-line jump, and no agent-timezone
+mismatch — an id sorted in UTC is creation order, always, even
+for someone who flies internationally a lot. Local timezone, if
+used for ids, can theoretically corrupt that: DST fall-back
+repeats an hour, flying west moves local time backwards, crossing
+the date line jumps the local date, and an agent using its own
+system timezone as "local" is not even the user's local. UTC
+avoids all of that, by design.
+
+Local time is not lost — it is included where it is relevant,
+in the body, in addition to the UTC structure, never instead of
+it. Prompt the agent to include local time if it is relevant
+for a note: an event, a meeting, travel, a daily log, anything
+where "when, locally" matters for understanding the note. Include
+it with its timezone, for example "Local: 2026-11-04 23:30 EST
+(UTC-5)", alongside the UTC id / created date. If local time is
+not relevant — a timeless idea, a principle, a summary — do not
+add it just for completeness. Subject dates in the body should
+likewise carry their local timezone if that timezone matters for
+the subject, otherwise UTC is sufficient.
+
+At setup, record the user's home timezone as a decision, for
+daily filenames and for local-time inclusion. That recorded
+timezone is for context, not for ids: ids stay UTC regardless
+of where the user is physically, so travel does not corrupt
+them. If a note's relevant local time is a travel local time,
+not home time, use that travel local time, labelled, in the body.
+
+**Renaming: id never changes, except for a duplicate / placeholder.**
+
+- Slug rename: rename the file `<id>-<old-slug>.md` to
+  `<id>-<new-slug>.md`, keep frontmatter id unchanged, update
+  the index file path for that id. Id-form links are unaffected
+  (they use id, not slug), map lists are unaffected (they use
+  id-form links).
+- Title rename: change the H1 only, keep id and filename
+  unchanged. Display text in incoming id-form links becomes
+  stale — cosmetic only, agent may propose updating display in
+  review, must not silently rewrite all incoming links. See Link
+  resolution below.
+- Folder move: move the file to a different year folder, keep id
+  unchanged, update the index file path for that id. Links are
+  unaffected, because resolution is by id, not by path.
+- Id change: never, in normal cases. Id is stable. The only
+  exception is a duplicate or placeholder id, which is already
+  a pre-push hold: the human decides which note keeps the id,
+  the other gets a new UTC id, all links to the renamed note are
+  updated to the new id, the index is updated, and the change is
+  recorded as a decision. Do not change both ids, and do not
+  change an id silently.
 
 ## Link resolution: id is canonical, title is display only
 
@@ -345,10 +410,10 @@ status: active
 ```
 
 - `id`: matches the filename prefix.
-- `created` / `updated`: ISO dates, note creation / last substantive update.
+- `created` / `updated`: ISO dates in UTC, note creation / last substantive update.
   This is not the same as the date of the subject. If a note is about
   2026, but written in 2031, `created` is 2031 and the subject date goes
-  in the body.
+  in the body. See Timezone and renaming below.
 - `type`: permanent, literature, decision, daily, project, person, map.
 - `status`: active, seedling, superseded.
 - `superseded_by`: id of the replacing note, required only when
