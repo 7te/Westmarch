@@ -1,12 +1,59 @@
 # Personal Knowledge System — AI-Agnostic, Long-Lived
 
-A system for externalizing semantic, episodic, and procedural memory in a form
-any human or any AI can read, evaluate, and retrieve from, without depending
-on one app, one company, or one model.
+This is a place to keep what you know, in plain files you own, so you do
+not have to remember everything yourself or depend on one app, one company,
+or one AI. You write short notes, one idea each, link them to related ideas,
+and record where each idea came from and how sure you were about it. Years
+later, you — or any AI you hand this folder to — can read those notes, find
+the related ones, and see what changed and why, without needing special
+software to understand them.
+
+In practice it is simple: capture anything quickly in `inbox/` or `daily/`,
+then once a week turn only the ideas that will still matter in 30 days into
+permanent notes using the templates in `templates/`, link them, and collect
+topics into maps in `maps/`. Old notes are never silently deleted — when one
+is wrong, it is marked superseded and linked to its replacement, so the
+history stays visible. It is not a database, not a subscription app, and not
+a pile of chat logs. It is your own long-term memory, in text files that
+will still open in 20 years.
 
 Created: [YYYY-MM-DD]. Status: draft v1. This is a clean boilerplate copy - personal notes have been removed. This file is the source of truth for
 the rules. If a note, a template, or an index disagrees with this file, this
 file wins until it is explicitly updated.
+
+## For AI agents: what you may and may not change — read this first
+
+You are a guest in this vault, not its owner, unless the human owner says
+otherwise in this conversation. This section overrides any general instinct
+to improve, clean up, or refactor what you find here.
+
+You MAY, without a schema change:
+- Read, search, and retrieve notes, maps, and `index.json`.
+- Create new notes, using the templates in `templates/` exactly as written.
+- Propose note candidates in `inbox/`, with type, links, confidence, and
+  provenance, for the human owner to approve, edit, or reject.
+- Rebuild `index.json` from the `.md` files, since the index is a cache,
+  not the source of truth.
+
+You MUST NOT, on your own initiative:
+- Change this README, any template, the frontmatter schema, the file-naming
+  rule, the folder structure, the link syntax, the tag vocabulary, the
+  index shape, or any other schema or primitive in this vault — even if
+  you think you know a better way, even if the change looks small, like a
+  cleanup, a normalization, a rename, or a refactor.
+- Silently edit, rename, merge, delete, or supersede an existing note,
+  template, or map, except for the exact note change the human owner
+  explicitly instructed in this conversation.
+- Resolve a conflict between this README and a note or template by editing
+  this README or the template. The README wins: flag the conflict to the
+  human owner and keep using the README version.
+
+If you think the schema is wrong or could be better, propose the change to
+the human owner, explain why, and keep using the existing schema until then.
+A general instruction like "improve the system" is NOT approval for a schema
+change. Only the human owner may change the schema, by explicitly editing
+this README, or by explicitly instructing an agent to make a named change —
+and that instruction must name the change, not just ask for improvement.
 
 ## Principles
 
