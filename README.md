@@ -282,11 +282,64 @@ Implications: notes that are not about this topic, but affect it.
 lists," not "every file containing the phrase war game." The map is
 maintained when notes are created, not reconstructed at query time.
 
+## Index protocol: environment check, user choice, recorded decision, fallback
+
+The index is important, and it is not optional at scale. What is
+configurable is *how* it is maintained in this vault, because not every
+agent has the same tools, and not every vault is the same size. Do not
+pick a universal method and do not drop the index entirely. Dictate it
+for this vault, once, using this protocol:
+
+1. **Environment check, silently, before any note work.** The agent
+   checks what it can actually do here: can it execute code? Can it
+   read and write files directly, or is it only receiving files in
+   chat? How many notes are in the vault right now? Is there an
+   `index.json` already, and does it match the notes on disk, or is
+   it empty or stale? No user input is needed for this step.
+2. **User choice, only where the answer changes the design.** If the
+   environment already answers it — a small vault where scanning is
+   trivial, or an agent with no code execution — the agent picks the
+   obvious method and says what it picked, without interrogating the
+   user. If the choice genuinely matters, the agent asks in plain
+   language, not tool jargon: for example, "Your vault is small, I can
+   just read your notes directly. Do you want me to keep a separate
+   list as well, or keep it simple?" or "I can rebuild that list
+   automatically when I have code access. Do you want that, or do you
+   want it kept by hand so any AI can do it, even one that cannot run
+   code?" The user decides based on their constraints and preferences.
+3. **Recorded decision.** The choice is written as a decision note in
+   `decisions/`, using the decision template: date, environment
+   (tools available, vault size, index state), options considered,
+   choice made, fallback (see below), and review trigger. The next
+   agent reads that decision first and follows it. It does not re-ask
+   the user.
+4. **Fallback, always.** Whatever method is chosen, if the index is
+   missing, stale, or unusable in this agent's environment, the agent
+   falls back to maps first, then to reading the note files themselves,
+   and verifies any index hit against the actual `.md` file before
+   citing it. An empty or stale index must never, on its own, produce
+   an empty answer. The index is a hint and an accelerator, not the
+   sole source of truth — the `.md` files are.
+5. **Re-ask only on material change.** Revisit the decision only if
+   the environment changes materially (a new agent with very different
+   tools), the vault crosses a size threshold where the chosen method
+   stops being practical, or the fallback keeps failing. A new agent
+   session alone is not a reason to re-ask.
+
+As a rule of thumb, not a hard threshold: under roughly 100 notes,
+maps plus file reads are sufficient and a JSON index may be empty;
+above that, a maintained JSON index should be kept, and at very large
+scale it is sharded by year (see Index below). The recorded decision
+for this vault may set a different threshold, and that decision wins
+for this vault.
+
 ## Querying: how any agent should ask
 
 An agent should translate a natural-language request into a structured
 query *before* touching the vault, and show that translation if it is
-ambiguous.
+ambiguous. It should first follow the index protocol above: use the
+recorded index method for this vault, and fall back to maps and file
+reads if that method is unusable here.
 
 Examples:
 
@@ -316,17 +369,23 @@ return: map-first
 
 Steps for an agent:
 1. Parse topic, date, type, degree.
-2. Filter `index.json` (see below) by those fields. Do not scan all .md
-   files at query time.
-3. Read only the top N .md files, in parallel, starting with direct hits.
+2. Use the recorded index method for this vault (see Index protocol
+   above). If that method is unavailable here, or the index is empty
+   or stale, fall back to maps, then to reading the `.md` files
+   directly — do not return an empty answer from an empty index alone.
+3. Read only the top N .md files, in parallel, starting with direct hits,
+   and verify any index hit against the actual `.md` file before citing it.
 4. Stream direct hits first, then supporting / implications, labeled by
    tier and by link chain, so the user can see why a note was included.
 
 ## Index: generated, not hand-written
 
 `index.json` at the vault root is a cache, not the source of truth.
-It is rebuilt on every write. If it is corrupted or a future tool does
-not like JSON, rebuild it from the .md files.
+It is maintained according to the recorded index decision for this
+vault (see Index protocol above). If it is corrupted or a future tool
+does not like JSON, rebuild it from the .md files, using the method
+recorded in that decision — or, if no decision exists yet, run the
+index protocol first and record one.
 
 Shape (one object per note, plus a terms map for keyword search):
 
