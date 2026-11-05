@@ -18,8 +18,8 @@ What the source says, fairly, in your own words. No take yet.
 
 What you think about it, what you agree / disagree with, what is missing.
 
-Confidence: high / medium / low, and why.
-Provenance: external source, see below.
+Confidence: high / medium / low, and why. See README for definitions.
+Provenance: exactly one value from the controlled list in the README, usually external-source for literature. Do not invent a new value.
 
 ## Links
 

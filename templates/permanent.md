@@ -14,8 +14,8 @@ First paragraph: one-sentence summary of the idea, in your own words.
 
 The idea, evidence, and counterpoint if any.
 
-Confidence: high / medium / low, and why.
-Provenance: user-reported, measured, assistant summary from public sources, external article, etc.
+Confidence: high / medium / low, and why. See README for definitions.
+Provenance: exactly one value from the controlled list in the README: user-stated, user-measured, measured, observed, external-source, assistant-summary, inferred, unknown. Do not invent a new value.
 
 ## Links
 

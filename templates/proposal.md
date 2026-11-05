@@ -5,6 +5,7 @@ type: proposal
 status: proposed
 candidate_type: permanent
 confidence: high / medium / low
+provenance: exactly one value from the controlled list in the README: user-stated, user-measured, measured, observed, external-source, assistant-summary, inferred, unknown
 ---
 
 # Proposed title

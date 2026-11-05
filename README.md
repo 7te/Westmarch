@@ -445,8 +445,8 @@ First paragraph: one-sentence summary of the idea, in your own words.
 The idea, evidence, and counterpoint if any.
 
 Confidence: high / medium / low, and why.
-Provenance: user-reported, measured, assistant summary from public
-sources, external article, etc. Separate what you know from how you know it.
+Provenance: exactly one value from the controlled list below.
+Separate what you know from how you know it.
 
 ## Links
 
@@ -466,6 +466,57 @@ Implications for:
 
 - URL, book, person, date, or "user, 2026-01-01" — separate from your take.
 ```
+
+**Confidence and provenance: exact values only, controlled list.**
+
+Confidence must be exactly one of:
+
+- `high` — directly stated by the user, directly measured, or
+  primary source verified.
+- `medium` — secondary source, consistent evidence, or inference
+  from strong evidence.
+- `low` — tentative, single weak source, assistant inference,
+  needs verification.
+
+Provenance must be exactly one of:
+
+- `user-stated` — user said it directly, in conversation / message.
+- `user-measured` — user measured it themselves and reported the
+  number, for example HR push-ups 50, pull-ups 18.
+- `measured` — agent / system measured it directly, for example
+  file read, hiscores check, commit verified back from GitHub.
+- `observed` — observed in use, not formally measured, for
+  example an agent generated an index on its own.
+- `external-source` — external public source, with citation in
+  `## Source` (URL, book, date).
+- `assistant-summary` — summary / synthesis of other notes /
+  conversation, no new primary evidence.
+- `inferred` — inference from evidence, not directly stated or
+  measured.
+- `unknown` — provenance unknown / not recorded, flag for review,
+  do not use as a direct hit without verification.
+
+Use the exact value, with the exact spelling and hyphen, no free
+variants: not "user said", "from chat", "user-reported", "public
+source", "measured" for a user measurement, or any other near
+synonym. This is strict on purpose, like a pure function: same
+input, same value, every agent, every time, so provenance can be
+reliably filtered by exact string match. If a note's main claim
+has mixed provenance, use the provenance of the main claim, note
+the other provenance in the body / `## Source`, or split the note
+if it is two independent claims with different provenance, see
+Note-creation triggers.
+
+If no value fits, do not invent a new one. Flag it in review and
+ask the human owner: pick the closest value, split the note, or
+add a new value. Only the human owner changes this vocabulary,
+by editing this README or instructing a named change, following
+the schema guard — an agent must not add a value on its own
+initiative. A human owner who wants looser classification is
+welcome to loosen it in their own copy: change the list in their
+README, record the decision, and follow the changed list
+prescriptively thereafter. That is their decision to make, not
+the agent's, and not this boilerplate's default.
 
 Link types matter for retrieval. "Related" is not "supports" is not
 "implications for." An agent should return them in different tiers,
