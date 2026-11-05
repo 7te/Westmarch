@@ -9,7 +9,7 @@ the related ones, and see what changed and why, without needing special
 software to understand them.
 
 In practice it is simple: capture anything quickly in `inbox/` or `daily/`,
-then once a week turn only the ideas that will still matter in 30 days into
+then at your chosen review cadence turn only the ideas that will still matter in 30 days into
 permanent notes using the templates in `templates/`, link them, and collect
 topics into maps in `maps/`. Old notes are never silently deleted — when one
 is wrong, it is marked superseded and linked to its replacement, so the
@@ -159,11 +159,55 @@ not by forcing them into permanent notes.
   - `literature/` — article / book summaries, source separated from take.
   - `decisions/` — decision notes.
   - `daily/` — daily logs, messy is fine.
-  - `inbox/` — raw dumps, unprocessed. Process weekly, do not let the
+  - `inbox/` — raw dumps, unprocessed. Process at the review cadence set at setup, do not let the
     inbox become the vault.
   - `templates/` — templates below. Do not edit a template without
     updating this README.
 - Body text may be any UTF-8. Filenames and frontmatter values stay ASCII.
+
+## Initial setup: sharding and review cadence — set once, follow prescriptively
+
+Two choices are made at initial use, via the agent, in plain language
+— not guessed per note, and not hard-coded as universal rules.
+Record both as decision notes in `decisions/`, like the index and
+link-typing decisions, with date, options considered, choice,
+fallback, and review trigger.
+
+**1. Sharding architecture.** Some people generate notes fast enough
+that sharding matters quickly, so do not start flat and shard later.
+At initial use, the agent presents the example structure in File
+naming and folders above — `notes/<year>/`, `maps/`, `decisions/`,
+`literature/`, `daily/`, `inbox/`, `templates/` — as a concrete
+example, not as a description to interpret. The user accepts that
+example, or customises it (for example `notes/<year-month>/`, a
+different shard key, or a different layout altogether). That choice
+is then followed prescriptively: create the shard folder if it does
+not exist, place the note there, never flat, never in a topic
+folder, unless the recorded decision says otherwise. Do not
+re-interpret sharding per note, and do not silently change the
+structure later — a change is a new recorded decision, made by the
+human owner.
+
+**2. Review cadence.** Weekly is the author's personal preference,
+not a system requirement. At initial use, the agent asks the user
+to set a review cadence, presenting weekly only as an example:
+daily, weekly, monthly, yearly, or a custom cadence the user picks.
+Record that choice, and follow it. Where this README says "at the
+review cadence", it means the cadence set at setup, not necessarily
+weekly.
+
+The agent checks up on preferences later, rather than assuming the
+initial choice is permanent: at a review, or periodically, ask in
+plain language whether the cadence — and, if volume has changed,
+the sharding — still fits. The human can change either at any
+time, and the change is recorded as a new decision note and
+followed prescriptively thereafter.
+
+If no setup choice exists yet — a cold agent opening the vault
+with no decision note — default to the example structure
+(`notes/<year>/`) and a weekly cadence, say plainly that those are
+defaults, and ask the user to confirm or change them at the next
+conversation. A default is a fallback, not a permanent guess.
 
 ## Link resolution: id is canonical, title is display only
 
@@ -318,7 +362,7 @@ The work is split like this:
 - **Agent proposes first.** When an agent creates or links a note, it
   proposes a type for each link, with a brief reason, using the
   definitions in Body structure above.
-- **Human approves or corrects, in the weekly review.** The human is
+- **Human approves or corrects, at the review cadence set at setup.** The human is
   an editor, not a classifier: approve the proposed types, or correct
   the ones that are wrong. No link needs to be classified by hand
   unless the agent's proposal is wrong.
@@ -340,7 +384,7 @@ should be in this vault, and records the answer as a decision note in
   Implications for when it is obvious. The agent does the obvious
   cases, the human corrects mistakes in review.
 - Strict: the agent proposes a type for every link, and the human
-  reviews every proposal in the weekly review.
+  reviews every proposal at the review cadence set at setup.
 - Minimal: links are Related unless the human or agent explicitly
   marks otherwise, for a specific note or argument.
 
@@ -563,10 +607,10 @@ same shape, same query logic.
 
 1. **Capture:** dump a thought, article, or decision in chat or in
    `inbox/`. No formatting required at capture time.
-2. **Process (agent-assisted, weekly):** split into atomic notes, one
+2. **Process (agent-assisted, at the review cadence):** split into atomic notes, one
    idea per note, in your own words, with links, implications, and
    provenance. Move out of `inbox/`. Do not let the inbox become the vault.
-3. **Revisit:** weekly, surface orphans (notes with no links in or out),
+3. **Revisit:** at the review cadence, surface orphans (notes with no links in or out),
    stale seedling notes, and superseded notes that are still linked as
    active. Prune or connect, do not just accumulate.
 4. **Query:** use the structured query form above. Prefer map-first
@@ -594,7 +638,7 @@ reused, with take separated from source.
 Process:
 - Agent proposes candidates in `inbox/` with type, links, confidence,
   provenance, and why it meets the criteria above.
-- User approves / edits / rejects in weekly review, or same-day if urgent.
+- User approves / edits / rejects at the review cadence, or same-day if urgent.
 - `note::` is a fast-track override: promote this now, skip the queue.
 - `don't note this` is a veto: the agent must not promote it, and must
   not re-propose it.
