@@ -1001,6 +1001,7 @@ Process:
   vault will accumulate hundreds of seedling candidates and only
   a handful of actual notes.
 - User approves / edits / rejects at the review cadence, or same-day if urgent.
+  The cadence adapts to the backlog — see Adaptive cadence below.
 - `note::` is a fast-track override: promote this now, skip the queue.
 - `don't note this` is a veto: the agent must not promote it, and must
   not re-propose it — see Review queue, veto list.
@@ -1097,6 +1098,44 @@ to expire, so the human can approve, keep, or veto them before
 they lapse — unless the user has confidently set do-not-ask on
 the rule, in which case the agent still lists what expired, but
 does not re-ask about the rule itself.
+
+**Adaptive cadence: human-only promotion, but the queue must not explode.**
+
+Promotion stays human-only — no agent ever promotes a proposal
+to a note on its own. What adapts, when the human is away for
+days or weeks, is the cadence and the proposing, so a backlog of
+100 proposals does not make review impossible:
+
+- **Backlog thresholds, set at initial use, recorded as a decision.**
+  Defaults, unless the human sets different numbers: under 10
+  pending proposals, normal cadence, agent proposes freely.
+  At 10–25 pending, the agent stops proposing new low-priority
+  candidates, consolidates duplicates into one proposal each,
+  and surfaces the top 5 at the next session, asking the human
+  to review sooner than the scheduled cadence.
+  Above 25 pending, the agent stops proposing entirely until
+  the backlog drops, consolidates duplicates, and presents a
+  prioritised top 5–10, asking for a review now.
+- **Cadence shortens when the backlog grows, lengthens when it stays small.**
+  If pending proposals are growing, or the oldest pending proposal
+  is older than two review cycles, the agent prompts for a review
+  sooner than the scheduled cadence, in plain language. If the
+  backlog stays empty or small for several cycles, the agent may
+  propose lengthening the cadence, and the human decides — the
+  agent does not silently change it.
+- **No duplicate proposals.** Before proposing anything new, an
+  agent checks the pending proposals and the existing notes.
+  A candidate already proposed is merged into that proposal,
+  with the new source noted, not proposed again as a second file.
+  A candidate already covered by a note is linked to that note,
+  not proposed as a duplicate.
+- **Review stays doable.** At review, the agent lists the top
+  proposals in full — highest durability, confidence, and
+  linkability first — and the rest briefly, one line each, so
+  the human can approve, reject, or veto the important ones
+  without reading 100 full proposals. Expiry still applies
+  per the expiry rule; adaptive cadence does not override it,
+  and does not auto-promote anything.
 
 ## Longevity checklist
 
