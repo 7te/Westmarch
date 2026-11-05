@@ -15,7 +15,13 @@ One-sentence summary of the proposed idea, in your own words.
 
 Atomic, durable, own-words + provenance + confidence, linkable,
 not transient, not already covered — show the work, briefly, for
-each criterion that matters.
+each criterion that matters. Name the closest worked example in
+the README (pass, transient fail, too broad, split, duplicate,
+borderline lesson) and explain why this candidate is like it, or
+why it differs, in light of the user's granularity preference set
+at setup. Do not turn the examples into a pass/fail checklist to
+game — reason by analogy, and let the human be the final editor
+on granularity.
 
 ## Links
 

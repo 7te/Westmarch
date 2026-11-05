@@ -167,9 +167,9 @@ not by forcing them into permanent notes.
 
 ## Initial setup: sharding and review cadence — set once, follow prescriptively
 
-Two choices are made at initial use, via the agent, in plain language
+Three choices are made at initial use, via the agent, in plain language
 — not guessed per note, and not hard-coded as universal rules.
-Record both as decision notes in `decisions/`, like the index and
+Record all three as decision notes in `decisions/`, like the index and
 link-typing decisions, with date, options considered, choice,
 fallback, and review trigger.
 
@@ -195,6 +195,21 @@ daily, weekly, monthly, yearly, or a custom cadence the user picks.
 Record that choice, and follow it. Where this README says "at the
 review cadence", it means the cadence set at setup, not necessarily
 weekly.
+
+**3. Granularity preference.** Language is arbitrary, and so is
+granularity of thought — unlike 1+1=2, there is no immutable size
+for "one idea". So the system does not impose a universal atomic
+size. At initial use, the agent asks the user, in plain language,
+how fine-grained they want notes to be: fine (split aggressively,
+one claim per note), medium (one topic per note, with related
+claims together), coarse (broader topic notes, split only when a
+topic clearly has two independent halves), or a preference in
+their own words. Record that choice as a decision note, and follow
+it prescriptively thereafter, using the worked examples below as
+calibration for what that preference looks like in practice. The
+user can change granularity at any time, and the agent checks,
+at review, whether it still fits — see Review queue, manual
+configuration, for the same pattern.
 
 The agent checks up on preferences later, rather than assuming the
 initial choice is permanent: at a review, or periodically, ask in
@@ -722,6 +737,52 @@ A candidate is promoted only if it passes all of:
 Decisions: only with reasoning + alternatives considered, where the
 *why* will matter later. Literature: only if the source will be
 reused, with take separated from source.
+
+Worked examples — calibration, not tests. Language and granularity
+are arbitrary, so these examples do not become a pass/fail
+checklist an agent can game ("can I summarise this in one sentence
+without 'and'?" — an agent will just write a sentence without
+'and'). They are concrete cases to reason by analogy to, in light
+of the user's granularity preference set at setup. In the proposal
+file, the agent shows its work by naming the closest example below
+and explaining, briefly, why this candidate is like it, or why it
+differs. The human, at review, is the final editor on granularity.
+
+- **Pass, single idea, durable.** "Sourdough starter needs feeding
+  once a day at room temperature, twice if the kitchen is warm."
+  One claim, still useful in 30+ days without chat context, links
+  to a bread / fermentation map. Promote as a permanent note.
+- **Fail, transient.** "The bakery on Main Street is open until
+  5pm today." A schedule for today, not a durable idea. Do not
+  promote. If the visit taught a durable lesson — for example,
+  "warm kitchens accelerate fermentation" — promote the lesson,
+  not the schedule.
+- **Fail, too broad.** "Cooking." That is not one idea, it is a
+  whole map. Do not promote as a permanent note. Either make it
+  a map and put specific notes under it, or split it into
+  specific notes: "Knife sharpening angle for a chef's knife",
+  "Resting dough improves extensibility", and so on.
+- **Split, two independent claims.** A conversation that yields
+  both "Resting dough improves extensibility" and "Cold water
+  slows yeast activity" contains two ideas that can be used,
+  linked, and updated independently. Split into two notes, link
+  them as Related, do not keep them as one note with two halves.
+  At a coarse granularity preference, the same conversation might
+  legitimately stay as one broader note — that is why granularity
+  is a user choice at setup, not a universal rule.
+- **Duplicate, link instead.** A candidate "Feeding a sourdough
+  starter daily" when a note "Sourdough starter feeding schedule"
+  already exists is already covered, even if the wording differs.
+  Do not create a duplicate. Link to the existing note, and, if
+  the candidate adds a genuinely new claim, add that claim to
+  the existing note or as a linked note, with a reason.
+- **Borderline, durable lesson from a transient event.** "I ran
+  a 5K in heat and overheated, despite drinking water." The race
+  date itself is transient. The lesson — "heat buildup, not leg
+  fatigue, limits my running in humid conditions, and indoor
+  treadmill paces understate that" — is durable, linkable, and
+  reusable. Promote the lesson, not the event.
+
 
 Process:
 - Agent proposes candidates as proposal files in `inbox/`, using
