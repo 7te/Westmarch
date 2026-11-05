@@ -8,11 +8,79 @@ about it. Years later, you — or any AI you hand this folder to — can read
 those notes, find the related ones, and see what changed and why, without
 needing special software to understand them.
 
-The name is from *The Lord of the Rings*: the Red Book of Westmarch is
-Bilbo and Frodo's book — a plain-text book, handed down, copied, and added
-to by later hands, that becomes the source of the whole story. That is the
-idea here: a book you own, that outlives any one tool, and that other
-people — human or AI — can add to without breaking it.
+## What inspired this, and what Zettelkasten is
+
+This is inspired by the Zettelkasten — German for "slip box" — a way
+of taking notes invented in practice by the sociologist Niklas
+Luhmann, who kept tens of thousands of small paper slips, each with
+one idea, each linked to other slips. The idea was not to file
+information away, but to have a conversation partner: you write an
+idea down in your own words, link it to what it relates to, and
+later, when you come back to it, the links show you connections you
+did not see when you wrote it.
+
+In this system, a Zettelkasten note is:
+
+- **One idea, not a whole topic.** A note is a single claim you can
+  use, link to, and update on its own. If it needs "and" to hold
+  together, it is probably two notes.
+- **In your own words, with a source.** Not a copy-paste, not a
+  quote alone. Where it came from, and how sure you were, are part
+  of the note, so you can trust it later.
+- **Linked, not filed.** Notes connect to each other with typed
+  links — related, supports, contradicts, implications — and
+  topics are collected into maps. You find a note by following
+  links, not by remembering which folder you put it in.
+- **Kept, not deleted.** When a note turns out to be wrong, it is
+  marked superseded and linked to its replacement. The history
+  stays visible, so you can see what you used to think, and why
+  it changed.
+
+The other inspiration is simpler, and more practical: apps die,
+companies change their terms, subscriptions lapse, and proprietary
+databases lock your own thinking inside a format only one tool can
+read. Plain text files, in a folder you own, do not. That is why
+this system is plain Markdown, no app required, and why any AI —
+not one specific AI, not one specific app — should be able to read
+it, add to it, and hand it back to you intact.
+
+## Should you use it?
+
+**Use it if:**
+
+- You want a long-term memory, not just a place to dump things.
+  You expect to come back to an idea in a month, a year, or ten
+  years, and still understand it.
+- You think by writing. Putting an idea in your own words, and
+  linking it to what you already know, is how you work out what
+  you actually think.
+- You want to own your notes. Plain files, no subscription, no
+  lock-in, readable in 20 years with any text editor.
+- You want any AI to be able to help with it — to find notes,
+  propose new ones, and link them — without that AI owning the
+  system.
+
+**Do not use it if:**
+
+- You just want quick capture, and never want to look back. A
+  notes app, a to-do list, or a chat log will do that faster, with
+  less work.
+- You want a task manager, a calendar, or a team database. This
+  is not that. It is slow, deliberate, and for ideas, not for
+  tracking what is due on Tuesday.
+- You do not want to review what you captured. The system only
+  works if, at your review cadence, you turn the ideas that will
+  still matter in 30 days into permanent notes, and let the rest
+  go. If you never review, the inbox just becomes a pile.
+- You need heavy media, real-time collaboration, or a shared
+  company wiki. Text notes can reference media, but media is not
+  the store here, and this is a personal system, not a team one.
+- You hate writing and linking. That is most of the work, and
+  there is no way around it — an AI can propose and draft, but
+  you are the editor, and you decide what stays.
+
+If none of that fits, that is fine. A system you will not use is
+worse than no system at all.
 
 In practice it is simple: capture anything quickly in `inbox/` or
 `daily/`, then at your chosen review cadence turn only the ideas that will
