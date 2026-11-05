@@ -55,6 +55,41 @@ change. Only the human owner may change the schema, by explicitly editing
 this README, or by explicitly instructing an agent to make a named change —
 and that instruction must name the change, not just ask for improvement.
 
+## Sensitive information: assume it could become public
+
+This system does not ban sensitive notes. That decision belongs to the human
+owner, who decides how much trust to place in the system. But make that
+decision with this assumption in mind:
+
+Treat anything you put in this vault — especially if you push it to GitHub,
+sync it to a cloud drive, or hand the folder to an AI — as if it could end
+up publicly available on the open internet, even if the repo is set to
+private today. A private setting can be changed by mistake, a folder can be
+shared, forked, or copied, a sync service or AI tool can retain or expose
+it, and a note once pushed is hard to fully retract from git history,
+forks, and caches. Private reduces exposure; it does not eliminate it.
+
+Strongly discouraged by default, not forbidden:
+- Personal identifying information: full names, addresses, dates of birth,
+  government or account IDs, phone numbers, and similar identifiers.
+- Secrets: passwords, API keys, tokens, private keys, and recovery codes.
+  These never belong in a note vault.
+- Financial, business, or client data: account numbers, salaries, pricing,
+  contracts, internal business figures, and anything a client or employer
+  gave you in confidence.
+- Medical and other sensitive personal detail.
+
+If you consciously choose to include such detail, do it deliberately, not
+by default: anonymize or redact where you can, keep the sensitive detail in
+a separate local-only or encrypted store that is never pushed, synced, or
+handed to an AI, and do not push personal notes into a public repo — this
+boilerplate repo is a template, not a place for your notes.
+
+Agents: do not promote personal, medical, or sensitive detail without an
+explicit `note::`, and when a human owner asks to add such detail, warn
+them of this assume-public rule first and get explicit confirmation for
+that specific note.
+
 ## Principles
 
 1. **Plain text first.** Notes are Markdown, UTF-8, no BOM, LF line endings.
