@@ -181,6 +181,34 @@ Zettelkasten covers semantic best. It does not, by itself, cover episodic
 or procedural well. This system adds those layers with different templates,
 not by forcing them into permanent notes.
 
+## Best way to do this — creator's preferred approach, not a requirement
+
+The best way to use this, in the creator's view, is with some form
+of version control — git is the example here, any version control
+that keeps a history will do — and at least one agent with some
+form of filesystem access, and internet access.
+
+Version control gives you a history you can go back to, a backup
+outside the folder itself, and a way to see what changed and when.
+An agent with filesystem access can read the whole vault, rebuild
+the index, check it against the `.md` files, and update shared
+files, instead of you having to copy-paste files back and forth
+in chat.
+
+Neither is technically required. You could do a lot of manual
+copy-pasting and editing — handing files to an agent in chat,
+copying its answers back into your vault, keeping your own
+backups by hand — and the system would still work, slowly. That
+is the point of "no proprietary or required tooling": the vault
+is plain text, and a human can maintain it by hand.
+
+Git, and an agent with filesystem and internet access, are just
+the creator's preferred approach. If you prefer a different
+version control system, a different sync method, or no version
+control at all, that is your decision to make at setup, and it
+is recorded as a decision — see `spec/setup.md` and
+`spec/sync.md`. Do not treat the preference above as a rule.
+
 ## How to use it, in one paragraph
 
 Capture anything quickly in `inbox/` or `daily/`. At your review cadence,

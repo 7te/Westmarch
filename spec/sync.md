@@ -8,6 +8,17 @@ Sync and version control are **held, not decided** in this boilerplate. Do not i
 
 The direction, recorded in the audit, is: the solution must be generic to any sync adapter (iCloud, Dropbox, Google Drive, OneDrive, Syncthing, or another), and must prompt the agent and the human to make their own decisions on install, or down the line if the human is not sure — the same setup-choice pattern as sharding, review cadence, granularity, and expiry (present options plainly, human decides or defers, record as a decision, revisit on material change).
 
+## Creator's preferred approach — not a requirement
+
+The creator's preferred approach is some form of version control
+— git is the example, any version control that keeps a history
+will do — and at least one agent with filesystem access, and
+internet access. Neither is technically required: a user could
+do a lot of manual copy-pasting and editing, and the system
+would still work, slowly. The preference is recorded in
+`README.md`; the sync / version-control choice itself remains
+held, and is the human's decision at setup.
+
 ## What is already decided, elsewhere
 
 - The core system works without version control, and benefits from it; it does not require it.
