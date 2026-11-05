@@ -78,6 +78,15 @@ Strongly discouraged by default, not forbidden:
   contracts, internal business figures, and anything a client or employer
   gave you in confidence.
 - Medical and other sensitive personal detail.
+- Indirect identifiers: details that could be used as heuristics to
+  identify an individual, even with no name attached. A note can still
+  identify someone by combination — for example exact dates plus a
+  neighborhood, workplace, role, or shift pattern, plus a distinctive
+  biography, injury, workplace story, or other rare trait. Removing a name
+  is not anonymizing if the remaining details triangulate to one person.
+  Generalize instead where you can: year instead of exact date, city
+  instead of neighborhood, role instead of employer, and leave out rare
+  details that are not needed for the idea itself.
 
 If you consciously choose to include such detail, do it deliberately, not
 by default: anonymize or redact where you can, keep the sensitive detail in
@@ -88,7 +97,9 @@ boilerplate repo is a template, not a place for your notes.
 Agents: do not promote personal, medical, or sensitive detail without an
 explicit `note::`, and when a human owner asks to add such detail, warn
 them of this assume-public rule first and get explicit confirmation for
-that specific note.
+that specific note. That check covers indirect identifiers too, not just
+direct PII — if a proposed note combines enough details to triangulate
+to a person, flag it, generalize it, or leave the identifying details out.
 
 ## Principles
 
