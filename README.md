@@ -724,18 +724,109 @@ Decisions: only with reasoning + alternatives considered, where the
 reused, with take separated from source.
 
 Process:
-- Agent proposes candidates in `inbox/` with type, links, confidence,
-  provenance, and why it meets the criteria above.
+- Agent proposes candidates as proposal files in `inbox/`, using
+  `templates/proposal.md` — see Review queue below, for the form,
+  status, veto, and expiry rules. A proposal is not a note, and a
+  seedling note is not a proposal: do not conflate them, or the
+  vault will accumulate hundreds of seedling candidates and only
+  a handful of actual notes.
 - User approves / edits / rejects at the review cadence, or same-day if urgent.
 - `note::` is a fast-track override: promote this now, skip the queue.
 - `don't note this` is a veto: the agent must not promote it, and must
-  not re-propose it.
+  not re-propose it — see Review queue, veto list.
 - No promotion of personal, medical, or sensitive detail without an
   explicit `note::`. This matters because the vault may be pushed to GitHub
   (use a private repo for personal notes).
 
 Test data: notes created to test the schema are marked seedling/test
 until explicitly approved as real.
+
+## Review queue: proposals, vetoes, expiry
+
+**Proposal form.** A proposal is a file in `inbox/`, using
+`templates/proposal.md`: frontmatter `type: proposal`,
+`status: proposed`, candidate type, confidence, created date, plus
+a one-sentence summary, why it meets the promotion criteria above,
+links, source / provenance, and a Decision section. The pending
+list is exactly the proposals with `status: proposed` — nothing
+else counts as pending, and proposal files are not indexed as notes
+and are never returned as direct hits.
+
+**Status transitions, in plain language:**
+- `proposed` → `approved`: agent creates the note, marks the
+  proposal `approved`, records the created note's id in its
+  Decision section, and moves it out of the pending list. The
+  proposal file is kept, not deleted, so proposal → note is traceable.
+- `proposed` → `rejected`: mark `rejected` with a one-line reason.
+  Rejected is not vetoed: the same candidate may be re-proposed
+  only with new evidence or new context, never automatically.
+- `proposed` → `vetoed`: mark `vetoed` with a reason, and add it
+  to the persistent veto list in `decisions/vetoes.md` (created by
+  the agent on first veto if it does not exist: date, vetoed
+  topic / proposal id, reason). Before proposing anything new, an
+  agent must check that veto list first. A vetoed topic is never
+  re-proposed, ever, unless the human explicitly revokes the veto
+  — recorded as a new decision, with the veto list entry removed.
+- `proposed` → `expired`: see Expiry below. Expired is not vetoed
+  and not a permanent rejection: the human may revive it, and an
+  agent may re-propose it only with new evidence or new context.
+
+**Expiry rule, set at initial use, user-determined.** At initial
+use, alongside sharding and review cadence, the agent asks the
+user, with a strong, clear prompt in plain language, to set an
+expiry rule — for example "expire after 1 month", "expire after
+2 review cycles", "never expire", or a custom rule. Record the
+rule, and the user's explicit do-not-ask choice (see below), as a
+decision note in `decisions/`, like the other setup decisions.
+
+Strong prompts and responses are fine, and expected, here. The
+agent should not silently infer how often to ask from how the user
+sounds — sentiment alone is unreliable, and a silent inference can
+lock in a wrong rule or nag a user who just talks tentatively.
+Instead, the agent asks explicitly, in conversation:
+
+> "Do you want me to stop asking about expiry, or check again
+> next review?"
+
+and records the explicit answer:
+- If the user says confidently, for example "just let them expire
+  after 1 month and don't ask me again", the agent trusts that,
+  applies the rule, and does not ask about the rule again unless
+  there is a material change — many wanted proposals expiring,
+  a cadence change, or the user saying the rule is not working.
+  Do-not-ask about the rule does not mean silence about proposals:
+  the agent still lists, at review, what expired and what is
+  about to expire, so expiry is transparent, not hidden.
+- If the user is hesitant, tentative, defers, or changes their
+  mind, the agent asks more consistently at reviews, with concrete
+  options — "Keep 1 month, try 3 months, or never expire?" — and
+  says plainly why it is asking again, for example "you seemed
+  unsure last time, so I'm checking again." It does not silently
+  adjust its asking frequency based on a sentiment guess.
+- If in doubt, default to asking, not to locking in.
+
+**Manual configuration, if the method has a bug.** If a user
+finds a bug with this method — proposals expiring too fast, a
+rule that does not fit their cadence, a veto that should not
+have stuck — the agent should first parse, in plain language,
+why the rule exists as it is: to prevent the inbox piling up
+with stale proposals, to keep the pending list reviewable, and
+to make vetoes survive across agents. Then it should help the
+user manually configure the parameters, to some extent: change
+the expiry duration, change the do-not-ask flag, change how
+often it re-asks, or revoke a veto. Record the new rule as a
+new decision note, and follow it prescriptively thereafter.
+Manual configuration covers parameters and preferences, not
+breaking the core queue: proposals still have a status, vetoes
+still are never re-proposed without an explicit revocation, and
+a changed rule does not retroactively un-expire proposals
+without the human saying so.
+
+At each review, before expiry, the agent lists proposals about
+to expire, so the human can approve, keep, or veto them before
+they lapse — unless the user has confidently set do-not-ask on
+the rule, in which case the agent still lists what expired, but
+does not re-ask about the rule itself.
 
 ## Longevity checklist
 
