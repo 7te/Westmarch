@@ -1,0 +1,7 @@
+# Longevity rules, enforced by git: plain text, UTF-8, LF endings.
+*.md text eol=lf
+*.json text eol=lf
+*.txt text eol=lf
+.gitignore text eol=lf
+.gitattributes text eol=lf
+.editorconfig text eol=lf

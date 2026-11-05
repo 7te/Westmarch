@@ -1,0 +1,13 @@
+# OS / editor artefacts — not notes, never commit these.
+.DS_Store
+Thumbs.db
+.obsidian/
+.vscode/
+*.swp
+*.swo
+*~
+
+# NOTE: index.json is deliberately NOT ignored here yet.
+# Whether it is committed or gitignored is tied to the index-builder
+# design, which is still open. Do not add it here until that decision
+# is made, or a fresh clone will lose its index with no way to rebuild it.

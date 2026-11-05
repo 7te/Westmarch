@@ -1,0 +1,13 @@
+# EditorConfig: UTF-8, LF endings, final newline.
+# trim_trailing_whitespace is off for Markdown on purpose: two trailing
+# spaces are meaningful line breaks in Markdown, and stripping them
+# would silently change a note.
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+indent_style = space
+indent_size = 2
+trim_trailing_whitespace = false
