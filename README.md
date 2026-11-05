@@ -225,6 +225,14 @@ with no decision note — default to the example structure
 defaults, and ask the user to confirm or change them at the next
 conversation. A default is a fallback, not a permanent guess.
 
+**Boilerplate note, prompt before treating it as real.** If a
+seedling note titled "Boilerplate note" exists in `notes/`, the
+first agent opening this vault must prompt the human owner, in
+plain conversation, before treating it as a personal idea: do you
+want to keep it, move it, or delete it? Do not delete it silently,
+and do not keep it silently as if it were a personal idea. Follow
+the human owner's exact instruction for that note.
+
 ## Daily notes: one file per day, hard-coded
 
 Daily format is decided, not open, and not a setup choice:
