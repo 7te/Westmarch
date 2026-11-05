@@ -296,6 +296,11 @@ status: active
   in the body.
 - `type`: permanent, literature, decision, daily, project, person, map.
 - `status`: active, seedling, superseded.
+- `superseded_by`: id of the replacing note, required only when
+  `status` is `superseded`, omitted otherwise. See Corrections and
+  supersession.
+- `supersedes`: id of the note this note replaces, present only on
+  a note that supersedes another, omitted otherwise.
 - `aliases`: do not use. Aliases were previously kept for Obsidian
   compatibility; that support has been dropped in favour of AI
   agnosticism (see Principles above). Resolution is by id, as defined
@@ -415,15 +420,50 @@ If a note needs 4+ tags, it is probably two notes, not one.
 
 If a note is wrong, do not delete it or rewrite it in place without a trace.
 
-1. Old note: `status` flips to `superseded`, with a one-line reason
-   and a link to the new note.
-2. New note: links back to the old note, with a one-line reason for
-   the change.
-3. The wrong version remains, marked wrong. An evaluator in 15 years
-   needs history, not just a current snapshot.
+Vaulting is good: the old version stays in the vault, marked, linked,
+and retrievable. A succession chain of changed opinions is important
+context, for the agent's context window and for the end user — it
+shows what was believed, when, and why it changed, not just the
+current snapshot. That is why superseded notes are deprioritised,
+not excluded and not deleted.
+
+Machine form, so an index and an agent can follow the chain without
+parsing body text:
+
+1. Old note: `status` flips to `superseded`, and frontmatter gains
+   `superseded_by: <id>` — the id of the note that replaces it,
+   required when `status` is `superseded`. The first line of the
+   body is a one-line reason for the change, in a fixed place, so
+   a human reading the old note sees it immediately.
+2. New note: frontmatter gains `supersedes: <id>` — the id of the
+   note it replaces — and links back to the old note, with a
+   one-line reason for the change.
+3. The index mirrors both fields, so a query can follow a chain
+   A → B → C to the current note without reading every `.md`
+   file, and can tell which notes in a chain are themselves
+   superseded.
+4. A chain is followed to the end: if B is itself superseded by C,
+   the current note is C, not B. Do not stop at an intermediate
+   superseded note and present it as current.
+
+Querying rule — deprioritise, do not exclude:
+- A superseded note is never returned as a direct hit alone.
+- When a query matches a superseded note, return the current
+  note first (following `superseded_by` to the end of the chain),
+  then the superseded note after active notes, labelled
+  `superseded`, with its reason and its replacement link shown.
+- The same applies to maps: prefer current notes as Direct;
+  a superseded note listed in a map must be labelled superseded,
+  with its replacement shown.
+- On an explicit history query — "why did this change?", "what did
+  I used to think?", a contested new note, or a thin new note that
+  does not carry forward the old reasoning — surface the full
+  chain, in order, labelled, so the agent and the user can see
+  the succession, not just the endpoint.
 
 This is the same rule for any corrected conflation: once
-corrected, it stays visible as corrected, not erased.
+corrected, it stays visible as corrected, not erased, and its
+place in the chain stays machine-readable.
 
 ## Maps of Content
 
@@ -629,6 +669,10 @@ Shape (one object per note, plus a terms map for keyword search):
 
 - Keyword search uses `terms`.
 - Filtering by date / type / status uses `notes`.
+- Index entries mirror `superseded_by` and `supersedes` when
+  present, so a query can follow a supersession chain and
+  deprioritise superseded notes without reading every `.md` file.
+  See Corrections and supersession.
 - Graph degree and retrieval tiers use `links.related`,
   `links.supports`, `links.contradicts`, and
   `links.implications_for`, kept distinct — they are not collapsed
