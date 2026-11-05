@@ -158,7 +158,8 @@ not by forcing them into permanent notes.
   - `maps/` — Maps of Content (MOCs). A map is a curated retrieval set.
   - `literature/` — article / book summaries, source separated from take.
   - `decisions/` — decision notes.
-  - `daily/` — daily logs, messy is fine.
+  - `daily/` — daily logs, one file per day, hard-coded —
+    see Daily notes below. Messy is fine.
   - `inbox/` — raw dumps, unprocessed. Process at the review cadence set at setup, do not let the
     inbox become the vault.
   - `templates/` — templates below. Do not edit a template without
@@ -223,6 +224,37 @@ with no decision note — default to the example structure
 (`notes/<year>/`) and a weekly cadence, say plainly that those are
 defaults, and ask the user to confirm or change them at the next
 conversation. A default is a fallback, not a permanent guess.
+
+## Daily notes: one file per day, hard-coded
+
+Daily format is decided, not open, and not a setup choice:
+
+- One file per day, in `daily/`, named `<YYYY-MM-DD>.md` — for
+  example `daily/2026-11-04.md`. No weekly log, no monthly log,
+  no single append-only log. A user who wants a different daily
+  format can adjust the system for their own use case, as with
+  any other rule, but the boilerplate default is not ambiguous.
+- Date is the user's local timezone date, not UTC. A note written
+  at 00:30 local is that local date's file, even if UTC says
+  otherwise. If the user's local timezone is not known, ask, and
+  record it — do not silently default to UTC.
+- Id is derived from the date, deterministically: `<YYYYMMDD>0000`
+  — for example, `202611040000` for 2026-11-04. Do not use the
+  creation time as the daily id, or the same date could get two
+  different ids. One date, one file, one id.
+- If a daily file for that date already exists, append to it
+  under the existing headings (What happened, Decisions made,
+  Ideas to process), in chronological order, with a time if known.
+  Do not create a second file for the same date, and do not
+  overwrite the existing file.
+- Daily vs inbox: a capture tied to a specific day's events goes
+  to that day's daily file. A raw idea, article, or thought not
+  tied to a day goes to `inbox/`. Do not create both for the same
+  capture. Daily notes are episodic source material for promotion
+  at review, not permanent answers: they are indexed with
+  `type: daily`, but they are never direct hits for a topic query
+  — only for a history / date query, or as provenance for a
+  promoted note.
 
 ## Link resolution: id is canonical, title is display only
 
@@ -974,8 +1006,8 @@ problem visible, in conversation, before it becomes public.
 
 - Controlled topic tag vocabulary: deferred until retrieval fails.
   See Maps / tag-index, to be created only then.
-- Daily note format: date file vs single log, to be decided on first
-  week of use.
+- Daily note format: decided 2026-11-04, one file per day, hard-coded
+  — see Daily notes above. No longer an open question.
 - Media handling (agreed 2026-10-29, principle, not a full spec):
   media is evidence, not a note. The durable store is the text note
   interpreting the media, with a transcript / timestamped observations

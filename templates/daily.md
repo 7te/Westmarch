@@ -1,5 +1,5 @@
 ---
-id: YYYYMMDDHHMM
+id: YYYYMMDD0000
 created: YYYY-MM-DD
 updated: YYYY-MM-DD
 type: daily
