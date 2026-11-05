@@ -143,7 +143,7 @@ not by forcing them into permanent notes.
 - One file per note. One canonical file, referenced many times. No
   filesystem symlinks. A wikilink is the portable symlink.
 - Filename: `<id>-<slug>.md`
-  - `id`: `YYYYMMDDHHMM`, e.g. `202610290221`. Unique, sortable, stable.
+  - `id`: `YYYYMMDDHHMM`, e.g. `202601010000`. Unique, sortable, stable.
     Renaming the slug later does not change the id.
   - `slug`: lower-case, ASCII only, hyphens, no spaces. No non-ASCII in
     filenames (macOS NFD vs Linux/Windows NFC causes byte-different
@@ -336,9 +336,9 @@ a colon, `#`, or start with a special character.
 
 ```yaml
 ---
-id: 202610290221
-created: 2026-10-29
-updated: 2026-10-29
+id: 202601010000
+created: 2026-01-01
+updated: 2026-01-01
 type: permanent
 status: active
 ---
@@ -399,7 +399,7 @@ Implications for:
 
 ## Source
 
-- URL, book, person, date, or "user, 2026-10-29" — separate from your take.
+- URL, book, person, date, or "user, 2026-01-01" — separate from your take.
 ```
 
 Link types matter for retrieval. "Related" is not "supports" is not
@@ -561,8 +561,8 @@ Supporting: notes that explain a mechanism this topic depends on.
 Implications: notes that are not about this topic, but affect it.
 ```
 
-"All my notes on war games" means "the war games map and everything it
-lists," not "every file containing the phrase war game." The map is
+"All my notes on Example Topic" means "the Example Topic map and everything it
+lists," not "every file containing the phrase example topic." The map is
 maintained when notes are created, not reconstructed at query time.
 
 ## Index protocol: environment check, user choice, recorded decision, fallback
@@ -723,8 +723,8 @@ Shape (one object per note, plus a terms map for keyword search):
       "id": "202601010000",
       "title": "Example note title",
       "file": "notes/2026/202601010000-example-note.md",
-      "created": "2026-10-29",
-      "updated": "2026-10-29",
+      "created": "2026-01-01",
+      "updated": "2026-01-01",
       "type": "permanent",
       "status": "active",
       "links": {
@@ -1036,7 +1036,7 @@ problem visible, in conversation, before it becomes public.
   See Maps / tag-index, to be created only then.
 - Daily note format: decided 2026-11-04, one file per day, hard-coded
   — see Daily notes above. No longer an open question.
-- Media handling (agreed 2026-10-29, principle, not a full spec):
+- Media handling (principle, not a full spec):
   media is evidence, not a note. The durable store is the text note
   interpreting the media, with a transcript / timestamped observations
   for audio and video. Media files themselves live in `assets/` or a
