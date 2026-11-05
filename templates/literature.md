@@ -24,16 +24,16 @@ Provenance: external source, see below.
 ## Links
 
 Related:
-- [[Other note]]
+- [[202601010001|Other note title]]
 
 Supports:
-- [[Note this supports]]
+- [[202601010002|Note this supports]]
 
 Contradicts:
-- [[Note this contradicts]]
+- [[202601010003|Note this contradicts]]
 
 Implications for:
-- [[Map or project this has implications for]]
+- [[202601010004|Map or project this has implications for]]
 
 ## Source
 

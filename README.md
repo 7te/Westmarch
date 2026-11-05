@@ -111,7 +111,11 @@ to a person, flag it, generalize it, or leave the identifying details out.
    way to mark implications. No hidden state, no app-specific metadata.
 3. **Agnostic.** No dependence on Obsidian, Notion, Roam, a specific
    embedding model, or a specific AI provider. Tools may read the vault;
-   the vault does not require them to be understood.
+   the vault does not require them to be understood. Obsidian
+   compatibility is not a design goal and has been dropped in favour
+   of AI agnosticism: if Obsidian happens to resolve a link, that is
+   incidental, not guaranteed, and it must never constrain the link
+   format below.
 4. **Scale-invariant.** Works at 100 notes with no index, and at 100,000
    notes with a generated index. The index is a cache, not the source.
    It can be rebuilt from the .md files at any time.
@@ -161,6 +165,71 @@ not by forcing them into permanent notes.
     updating this README.
 - Body text may be any UTF-8. Filenames and frontmatter values stay ASCII.
 
+## Link resolution: id is canonical, title is display only
+
+Canonical link form, for all new links:
+
+```
+[[<id>|<Display Title>]]
+```
+
+Example: `[[202601010001|Example note title]]`. The part before the
+pipe is the target: the note's id, exactly as in its frontmatter and
+filename prefix. The part after the pipe is display text only — the
+note's title at link time, for human reading. An agent resolves the
+link by id, via the index or by frontmatter id, regardless of the
+note's current slug, folder, or H1 title.
+
+That is deliberate, and it solves the rename problems that title
+links cannot:
+
+- Renaming a slug does not break a link, because the id does not change.
+- Renaming an H1 title does not break a link, because the target is
+  the id, not the title. Stale display text is cosmetic only: an
+  agent may propose updating it in review, but it must not silently
+  rewrite all incoming links, and a stale display must never be
+  treated as a broken link.
+- Moving a note to a different year folder does not break a link,
+  because resolution is by id, not by path.
+
+Legacy title-only links, `[[Title]]`, if encountered in older notes:
+resolve them via a title-to-id map, and only if there is exactly one
+match. If there are two or more matches, or no match, **fail loudly**:
+do not guess, do not return the first match, do not return a wrong
+note as if it were right. List the candidates (or the lack of any),
+ask the human owner to pick, and record the corrected id link.
+Failing loudly is the correct behaviour here, not a bug to work around.
+
+Duplicate titles are not a rare edge case. At 10 notes they are
+uncommon; as a vault grows to hundreds or thousands of notes, generic
+and near-duplicate titles become inevitable — "Meeting notes",
+"Project update", "Ideas", case and punctuation variants of the same
+title, and so on — and they make indexing, search, and legacy title
+resolution materially harder. That is why the canonical form is by id,
+and why the title directive below matters at scale.
+
+## Titles: specific, not vague
+
+Agents should try to avoid vague titles in general, and propose
+specific ones at creation time. A title should be specific enough to
+distinguish this note from other notes on a similar topic, without
+needing its body to explain what it is about.
+
+Avoid, as a title alone: "Notes", "Ideas", "Meeting", "Project",
+"Update", "Thoughts", and similar single-word or generic titles.
+Prefer a title that carries topic, scope, or date where needed, for
+example "Meeting notes - restaurant SaaS pricing, 2026-11-04" rather
+than "Meeting notes".
+
+This is a directive, not a ban and not a validator: a note is not
+rejected for a vague title, and a human owner may keep a vague title
+if they choose to. The agent's job is to propose a specific title,
+flag a vague one in review with a more specific alternative, and
+otherwise follow the owner's choice. As the vault grows, vague titles
+are a scaling cost — more collisions, harder search, more ambiguous
+legacy links — so the earlier specificity is introduced, the cheaper
+it is.
+
 ## Frontmatter schema
 
 Minimal, same for every note. All values ASCII, quoted if they contain
@@ -183,11 +252,10 @@ status: active
   in the body.
 - `type`: permanent, literature, decision, daily, project, person, map.
 - `status`: active, seedling, superseded.
-- `aliases` (optional, Obsidian compatibility only): a list containing the
-  H1 title, so Obsidian can resolve `[[Title]]` links to a file named
-  `<id>-<slug>.md`. An AI should resolve links by H1 title, not by
-  filename, and does not need aliases. Aliases are a convenience, not
-  part of the core schema.
+- `aliases`: do not use. Aliases were previously kept for Obsidian
+  compatibility; that support has been dropped in favour of AI
+  agnosticism (see Principles above). Resolution is by id, as defined
+  in Link resolution below, not by alias, title, or filename.
 
 Do not put critical information only in frontmatter. Title, first-sentence
 summary, confidence, and provenance also go in the body, so they survive
@@ -214,16 +282,16 @@ sources, external article, etc. Separate what you know from how you know it.
 ## Links
 
 Related:
-- [[Other note]]
+- [[202601010001|Other note title]]
 
 Supports:
-- [[Note this supports]]
+- [[202601010002|Note this supports]]
 
 Contradicts:
-- [[Note this contradicts]]
+- [[202601010003|Note this contradicts]]
 
 Implications for:
-- [[Map or project this has implications for, even if it is not about it]]
+- [[202601010004|Map or project this has implications for, even if it is not about it]]
 
 ## Source
 

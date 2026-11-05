@@ -13,17 +13,17 @@ One-sentence scope: what this map covers, and what it does not cover.
 ## Direct
 
 Notes actually about this topic:
-- [[Direct note]]
+- [[202601010001|Direct note title]]
 
 ## Supporting
 
 Notes that explain a mechanism this topic depends on:
-- [[Supporting note]]
+- [[202601010002|Supporting note title]]
 
 ## Implications
 
 Notes that are not about this topic, but affect it:
-- [[Implication note]]
+- [[202601010003|Implication note title]]
 
 ## Open questions
 
