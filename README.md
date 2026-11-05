@@ -618,6 +618,74 @@ until explicitly approved as real.
 - [ ] No proprietary database as source of truth.
 - [ ] Index regenerable from .md files.
 
+## Before you push: check, flag, hold
+
+This system cannot control an AI, only the directives in this README.
+So this rule is written as a conversation, not as a script, a gate,
+or an error code — because the end goal is a fairly natural human
+conversation, and a formal gate is exactly the kind of thing an
+agent will either bypass silently or present as an incomprehensible
+failure.
+
+Before a git push, a publication, or handing the vault (or a note)
+to another system — the step where retraction becomes hard — an
+agent must check the notes being pushed, and only those notes, not
+the whole vault every time:
+
+Format, which breaks retrieval if wrong:
+- Id is real and unique, not a placeholder like `YYYYMMDDHHMM` or
+  `000000000000`, and not duplicated by another note.
+- Frontmatter is complete, and the filename is ASCII `id-slug`.
+- Links are in id form, or a legacy title link that resolves to
+  exactly one note.
+- File is UTF-8, no BOM, LF endings, so far as the agent can tell
+  in its environment.
+
+Safety, which is hard to retract once pushed:
+- No secrets: passwords, API keys, tokens, private keys, recovery codes.
+- No direct personal information, financial / business / client
+  confidential data, or medical detail, unless the human has
+  explicitly chosen to include that specific note.
+- No indirect identifiers: combinations of details that triangulate
+  to a person even with no name — see Sensitive information above.
+
+A vague title alone does not hold a push: it is flagged in review
+with a more specific alternative, per Titles above, but a note is
+not rejected for a vague title.
+
+If anything above flags, **do not push that note**. Tell the human
+in plain conversation what flagged, in which note, and why it
+matters — no error code, no ticket, no form to fill in. For example:
+"I was about to push this note, but I noticed it contains X, which
+could identify Y if the repo becomes public. I haven't pushed it —
+do you want me to fix that, or push it anyway?"
+
+Wait for an explicit override for that specific note. "Yes, push it
+anyway" counts, for that note only. A general approval, an earlier
+approval, or silence does not count. An override does not set a
+precedent and does not change this rule: the next push is checked
+again.
+
+Saving a note locally is not blocked by this rule. The hold applies
+to the push / share step. For an iCloud-only vault, where sync
+itself cannot be held by a directive alone, flag before handing the
+folder onward, and say plainly that sync may already have copied it.
+
+A code-capable agent may run this checklist as a script it writes
+itself. A no-code agent does the same checklist by reading. The
+checklist and the hold are the same either way; a script is an
+optional implementation, never a requirement, and it must not
+change the checklist.
+
+If the same flag keeps repeating — one agent consistently
+generating bad notes and flagging them — say so plainly in
+conversation, for example "this is the third note this week with
+the same problem." That pattern is a signal to the human to change
+the agent, the prompt, or the workflow. No directive in this README
+can fix an agent's quality, and pretending otherwise would be a
+gate that fails silently. The directive's job is to make the
+problem visible, in conversation, before it becomes public.
+
 ## Open design questions (not yet decided)
 
 - Controlled topic tag vocabulary: deferred until retrieval fails.
