@@ -93,7 +93,7 @@ needing its body to explain what it is about.
 Avoid, as a title alone: "Notes", "Ideas", "Meeting", "Project",
 "Update", "Thoughts", and similar single-word or generic titles.
 Prefer a title that carries topic, scope, or date where needed, for
-example "Meeting notes - restaurant SaaS pricing, 2026-11-04" rather
+example "Notes - learning a language, 2026-11-04" rather
 than "Meeting notes".
 
 This is a directive, not a ban and not a validator: a note is not
@@ -421,40 +421,42 @@ file, the agent shows its work by naming the closest example below
 and explaining, briefly, why this candidate is like it, or why it
 differs. The human, at review, is the final editor on granularity.
 
-- **Pass, single idea, durable.** "Sourdough starter needs feeding
-  once a day at room temperature, twice if the kitchen is warm."
+- **Pass, single idea, durable.** "Rice needs to rest, covered,
+  for 10 minutes after the heat is off, or the bottom stays wet
+  and the top stays hard."
   One claim, still useful in 30+ days without chat context, links
-  to a bread / fermentation map. Promote as a permanent note.
-- **Fail, transient.** "The bakery on Main Street is open until
-  5pm today." A schedule for today, not a durable idea. Do not
+  to a cooking / rice map. Promote as a permanent note.
+- **Fail, transient.** "The market is open until 5pm today."
+  A schedule for today, not a durable idea. Do not
   promote. If the visit taught a durable lesson — for example,
-  "warm kitchens accelerate fermentation" — promote the lesson,
+  "rice sold loose at the market absorbs moisture in humid
+  weather, so store it sealed" — promote the lesson,
   not the schedule.
-- **Fail, too broad.** "Cooking." That is not one idea, it is a
+- **Fail, too broad.** "Growing a plant." That is not one idea, it is a
   whole map. Do not promote as a permanent note. Either make it
   a map and put specific notes under it, or split it into
-  specific notes: "Knife sharpening angle for a chef's knife",
-  "Resting dough improves extensibility", and so on.
+  specific notes: "Watering a plant in direct sun", "Turning a
+  plant weekly so it grows straight", and so on.
 - **Split, two independent claims.** A conversation that yields
-  both "Resting dough improves extensibility" and "Cold water
-  slows yeast activity" contains two ideas that can be used,
+  both "Practising new words out loud sticks better than reading
+  them silently" and "Reviewing words the next day stops them
+  fading" contains two ideas that can be used,
   linked, and updated independently. Split into two notes, link
   them as Related, do not keep them as one note with two halves.
   At a coarse granularity preference, the same conversation might
   legitimately stay as one broader note — that is why granularity
   is a user choice at setup, not a universal rule.
-- **Duplicate, link instead.** A candidate "Feeding a sourdough
-  starter daily" when a note "Sourdough starter feeding schedule"
+- **Duplicate, link instead.** A candidate "Letting rice rest
+  after cooking" when a note "Resting rice after cooking"
   already exists is already covered, even if the wording differs.
   Do not create a duplicate. Link to the existing note, and, if
   the candidate adds a genuinely new claim, add that claim to
   the existing note or as a linked note, with a reason.
-- **Borderline, durable lesson from a transient event.** "I ran
-  a 5K in heat and overheated, despite drinking water." The race
-  date itself is transient. The lesson — "heat buildup, not leg
-  fatigue, limits my running in humid conditions, and indoor
-  treadmill paces understate that" — is durable, linkable, and
-  reusable. Promote the lesson, not the event.
+- **Borderline, durable lesson from a transient event.** "I walked
+  a new route in heat and got tired, despite drinking water." The
+  walk itself is transient. The lesson — "heat buildup, not leg
+  fatigue, limits walking in humid conditions" — is durable,
+  linkable, and reusable. Promote the lesson, not the event.
 
 
 Process:
