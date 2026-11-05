@@ -124,7 +124,18 @@ to a person, flag it, generalize it, or leave the identifying details out.
    at that size, and the claim is "should", not "does".
 5. **Self-describing.** An agent opening this folder cold should be able
    to read this README and then correctly use the rest of the vault,
-   with no prior prompt and no custom tooling.
+   with no prior prompt and no proprietary or required tooling.
+   "No custom tooling" means: no proprietary tool, and no tool is
+   required to read or use the vault. The vault is plain `.md` files
+   plus this README, and that alone is sufficient. Any tooling is
+   small, standard, replaceable, and optional — a helper may exist,
+   but the vault must never depend on it. A human can maintain the
+   vault by hand, slowly: the index is derived from note frontmatter
+   (id, title, file, type, status, dates, tags, typed links), so a
+   person with a text editor can rebuild or correct an index entry
+   from the `.md` file it mirrors, and an agent with no code
+   execution can do the same. That is slow and error-prone at
+   scale, which is why a helper is useful — not why one is required.
 6. **Selective retrieval, even if context becomes free.** Direct hits
    first, supporting notes second, implications third. Reading everything
    degrades reasoning, even when it is cheap.
