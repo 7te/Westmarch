@@ -32,7 +32,8 @@ You MAY, without a schema change:
 - Create new notes, using the templates in `templates/` exactly as written.
 - Propose note candidates in `inbox/`, with type, links, confidence, and
   provenance, for the human owner to approve, edit, or reject.
-- Rebuild `index.json` from the `.md` files, since the index is a cache,
+- Rebuild the per-year index files (`index-<year>.json`) and the root
+  manifest (`index.json`) from the `.md` files, since the index is a cache,
   not the source of truth.
 
 You MUST NOT, on your own initiative:
@@ -116,9 +117,11 @@ to a person, flag it, generalize it, or leave the identifying details out.
    of AI agnosticism: if Obsidian happens to resolve a link, that is
    incidental, not guaranteed, and it must never constrain the link
    format below.
-4. **Scale-invariant.** Works at 100 notes with no index, and at 100,000
+4. **Scale-invariant.** Should work at 100 notes with no index, and at 100,000
    notes with a generated index. The index is a cache, not the source.
-   It can be rebuilt from the .md files at any time.
+   It can be rebuilt from the .md files at any time. 100,000 is a design
+   goal, not a tested claim — no vault using this system has been run
+   at that size, and the claim is "should", not "does".
 5. **Self-describing.** An agent opening this folder cold should be able
    to read this README and then correctly use the rest of the vault,
    with no prior prompt and no custom tooling.
@@ -727,8 +730,8 @@ for this vault, once, using this protocol:
 
 As a rule of thumb, not a hard threshold: under roughly 100 notes,
 maps plus file reads are sufficient and a JSON index may be empty;
-above that, a maintained JSON index should be kept, and at very large
-scale it is sharded by year (see Index below). The recorded decision
+above that, a maintained JSON index should be kept, sharded by year
+by default (see Index below). The recorded decision
 for this vault may set a different threshold, and that decision wins
 for this vault.
 
@@ -779,16 +782,32 @@ Steps for an agent:
 
 ## Index: generated, not hand-written
 
-`index.json` at the vault root is a cache, not the source of truth.
+The index is a cache, not the source of truth. By default it is
+sharded by year: one file per year, `index-<year>.json`
+(`index-2026.json`, etc.), each with the shape below, plus a root
+`index.json` that is a manifest only — it lists the year shards,
+their note counts, and freshness, not the full note entries.
 It is maintained according to the recorded index decision for this
 vault (see Index protocol above). If it is corrupted or a future tool
 does not like JSON, rebuild it from the .md files, using the method
 recorded in that decision — or, if no decision exists yet, run the
 index protocol first and record one.
 
+An agent querying the vault reads the root manifest first, then only
+the year shard(s) relevant to that query — never the whole index at
+once. If a single year shard itself gets too large to read or query
+practically, do not silently invent a new scheme. Explain the issue
+to the human in plain language — how large the shard is, what is
+getting slow or expensive, and what sharding options would help
+(by month, by id prefix, by topic, or another) — work with them to
+choose a more functional sharding solution, and record the choice
+as a decision. The per-year default is the starting point, not the
+final answer at every size.
+
 ### Index is committed, with a freshness check
 
-`index.json` **is** committed, and is deliberately **not** in
+The index files — `index-<year>.json` and the root manifest
+`index.json` — **are** committed, and are deliberately **not** in
 `.gitignore`. That is a decision, not an oversight, made for the
 cold-agent case: a fresh clone, or an agent with no code execution,
 benefits from a shared index built by a previous agent, instead of
@@ -812,15 +831,15 @@ before trusting it:
   that as a first hint, but must not rely on a timestamp alone:
   verify cited notes against `.md` anyway.
 
-Conflicts on `index.json` are never merged:
-- In git, if `index.json` conflicts, discard both sides and
+Conflicts on the index files are never merged:
+- In git, if an index file conflicts, discard both sides and
   regenerate it from the `.md` files, then commit the regenerated
   version. Merging two derived indexes by hand is meaningless —
   regeneration is the only correct resolution.
 - In iCloud, if a conflicted copy appears, ignore the conflicted
   copy, regenerate from `.md` files, and delete the conflicted
   copy if possible. Do not cite from a conflicted index.
-- Commit `index.json` in the same commit as the `.md` changes
+- Commit the index files in the same commit as the `.md` changes
   that caused it, not as separate index-only commits, except for
   a deliberate rebuild at review. That keeps each commit's index
   in sync with its notes, and keeps git history readable instead
@@ -879,8 +898,11 @@ Shape (one object per note, plus a terms map for keyword search):
   pointer in this file. Embeddings are regenerable from the .md files;
   they are not the source.
 
-At 100,000 notes, shard the index by year, `index-2026.json`, etc.,
-same shape, same query logic.
+The index is sharded by year by default, `index-2026.json`, etc.,
+same shape, same query logic. If a single year shard gets too large
+to read or query practically, see the sharding instruction in the
+Index section above: explain the issue to the human and agree a
+more functional sharding solution, rather than silently inventing one.
 
 ## Workflow: capture, process, revisit
 

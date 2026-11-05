@@ -1,4 +1,9 @@
 {
-  "notes": {},
-  "terms": {}
+  "manifest": true,
+  "shards": [
+    "index-2026.json"
+  ],
+  "note_counts": {
+    "index-2026.json": 0
+  }
 }
