@@ -32,6 +32,9 @@ Supports:
 Contradicts:
 - [[Note this contradicts]]
 
+Implications for:
+- [[Map or project this has implications for]]
+
 ## Source
 
 - Full citation, URL, date accessed.

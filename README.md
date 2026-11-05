@@ -232,7 +232,56 @@ Implications for:
 
 Link types matter for retrieval. "Related" is not "supports" is not
 "implications for." An agent should return them in different tiers,
-not as one undifferentiated pile.
+not as one undifferentiated pile, and it must label supports and
+contradicts distinctly — a note that argues against an idea must never
+be returned as if it supported it.
+
+## Link typing: preserve all four types, without tedious manual work
+
+All four link types are preserved: Related, Supports, Contradicts, and
+Implications for. They are a human judgment — whether a note supports,
+argues against, merely relates to, or has implications for another idea
+— and that judgment is preserved in the index (see Index below), not
+flattened into a single "related" pile.
+
+Humans are not expected to do tedious classification work from scratch.
+The work is split like this:
+
+- **Agent proposes first.** When an agent creates or links a note, it
+  proposes a type for each link, with a brief reason, using the
+  definitions in Body structure above.
+- **Human approves or corrects, in the weekly review.** The human is
+  an editor, not a classifier: approve the proposed types, or correct
+  the ones that are wrong. No link needs to be classified by hand
+  unless the agent's proposal is wrong.
+- **Ambiguous means Related.** If a link's type is not clear, default
+  to Related. Do not force a false precision — a vague Related is
+  better than a wrong Supports or Contradicts, and it can be
+  re-typed later when the relationship becomes clear.
+- **Untyped links are Related.** A link with no type given is treated
+  as Related, not rejected. The system does not refuse a note for
+  lacking a typed link.
+
+**Setup choice, recorded like the index decision.** At setup, the
+agent asks the human owner, in plain language, how strict link typing
+should be in this vault, and records the answer as a decision note in
+`decisions/` (same mechanism as the Index protocol above). For example:
+
+- Light (recommended for most vaults, and for non-technical owners):
+  default to Related, and only mark Supports, Contradicts, or
+  Implications for when it is obvious. The agent does the obvious
+  cases, the human corrects mistakes in review.
+- Strict: the agent proposes a type for every link, and the human
+  reviews every proposal in the weekly review.
+- Minimal: links are Related unless the human or agent explicitly
+  marks otherwise, for a specific note or argument.
+
+The agent follows the recorded setup choice until the owner changes
+it, and it does not re-ask on every note. If no setup choice exists
+yet, default to Light: Related unless obvious, agent proposes,
+human corrects in review. That default is what keeps the work from
+becoming tedious — the human only touches the exceptions, not every
+link.
 
 ## Tags: controlled, narrow, and optional at first
 
@@ -267,6 +316,13 @@ corrected, it stays visible as corrected, not erased.
 ## Maps of Content
 
 A map is not a folder and not a tag. It is a note that curates a cluster.
+Note the vocabulary difference, deliberately: a map's Direct /
+Supporting / Implications headings are retrieval tiers (is it about
+the topic, one hop away, or affecting it?), while a note's Related /
+Supports / Contradicts / Implications for headings are link types
+(does it relate to, support, argue against, or have implications for
+another idea?). Do not confuse the two — a Supporting note in a map
+is not automatically a Supports link, and vice versa.
 
 Example structure for `maps/`:
 
@@ -400,9 +456,12 @@ Shape (one object per note, plus a terms map for keyword search):
       "updated": "2026-10-29",
       "type": "permanent",
       "status": "active",
-      "links_out": ["202601010001"],
-      "links_in": ["202601010002"],
-      "implications_for": ["202601010001"]
+      "links": {
+        "related": [],
+        "supports": ["202601010001"],
+        "contradicts": [],
+        "implications_for": []
+      }
     }
   },
   "terms": {
@@ -414,7 +473,17 @@ Shape (one object per note, plus a terms map for keyword search):
 
 - Keyword search uses `terms`.
 - Filtering by date / type / status uses `notes`.
-- Graph degree uses `links_out` / `links_in` / `implications_for`.
+- Graph degree and retrieval tiers use `links.related`,
+  `links.supports`, `links.contradicts`, and
+  `links.implications_for`, kept distinct — they are not collapsed
+  into a single list.
+- Only outgoing typed links are hand-maintained in the index.
+  Incoming links are derived from other notes' outgoing links at
+  query or rebuild time, not edited by hand on every note — that
+  would be the tedious work this system is trying to avoid.
+  The older `links_out` / `links_in` fields, if present in an older
+  index, are the union of the typed outgoing / incoming links
+  respectively, and should be migrated to the typed form above.
 - Vector embeddings, if used, are stored separately, with only a
   pointer in this file. Embeddings are regenerable from the .md files;
   they are not the source.
