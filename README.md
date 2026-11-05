@@ -454,14 +454,34 @@ tags only after retrieval actually fails, and only from a controlled list.
 
 Add topic tags only after retrieval actually fails, and maintain the controlled list in `maps/tag-index.md`.
 
-If tags are added, keep them to three dimensions, max 1-2 per note
-per dimension, and maintain a synonym map in `maps/tag-index.md`:
+If tags are added, there is no numeric limit — no max 3, no 4+
+split trigger, no 1-2 per dimension, no total cap. Those numbers
+contradicted each other, and a number an agent can game is not a
+good rule for an arbitrary thing like tagging. Maintain a synonym
+map in `maps/tag-index.md`, and keep tags controlled and narrow:
 
 - Type: already in frontmatter, do not duplicate as a tag.
 - Status: already in frontmatter, do not duplicate as a tag.
-- Domain: only if not obvious from links.
+- Domain / topic: only if not obvious from links, and only from
+  the controlled list in `maps/tag-index.md`.
 
-If a note needs 4+ tags, it is probably two notes, not one.
+If a note needs many tags, consider whether it is two notes, not
+one — as a prompt to think, not as a trigger to split. The agent
+shows its work in the proposal file: why these tags are justified,
+what the closest worked example is, and whether it thinks a split
+would help. The human, at review or anytime in conversation, can
+split, merge, or retag a note with a prompt based on what they
+want — "split this note into pricing and margin notes", "drop
+the `shift4` tag, it's in the body already", "keep all 6 tags,
+this really is one idea" — and the agent does that exact change,
+per the schema guard. The human is the final editor on tags, not
+a number.
+
+This decision is sealed until a long-term issue with it is
+discovered: if, over time, over-tagging or under-tagging becomes
+a real problem in practice, revisit this rule, record a new
+decision, and follow that instead. Do not change it silently on
+a single bad example.
 
 ## Corrections and supersession: do not silently edit
 
