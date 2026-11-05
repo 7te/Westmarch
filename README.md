@@ -13,9 +13,11 @@ then at your chosen review cadence turn only the ideas that will still matter in
 permanent notes using the templates in `templates/`, link them, and collect
 topics into maps in `maps/`. Old notes are never silently deleted — when one
 is wrong, it is marked superseded and linked to its replacement, so the
-history stays visible. It is not a database, not a subscription app, and not
-a pile of chat logs. It is your own long-term memory, in text files that
-will still open in 20 years.
+history stays visible. It is not a proprietary database, not a subscription
+app, and not a pile of chat logs. It is your own long-term memory, in text
+files that will still open in 20 years. The index is a derived database
+(see Index below) — built from those text files, rebuildable at any time —
+not a separate proprietary store.
 
 Created: [YYYY-MM-DD]. Status: draft v1. This is a clean boilerplate copy - personal notes have been removed. This file is the source of truth for
 the rules. If a note, a template, or an index disagrees with this file, this
@@ -106,7 +108,12 @@ to a person, flag it, generalize it, or leave the identifying details out.
 
 1. **Plain text first.** Notes are Markdown, UTF-8, no BOM, LF line endings.
    If every Markdown parser disappeared, the notes would still be readable
-   text. No proprietary database is the source of truth.
+   text. No proprietary database is the source of truth. The index *is* a
+   database — a derived one, built from the `.md` files, rebuildable at any
+   time, and never a separate store. The `.md` files are the authoritative
+   source; the index is the query source. On any conflict, the `.md` file
+   wins, and the index is regenerated. See Index below for the rebuild
+   contract.
 2. **Elegant enough for agents, simple enough for humans.** One template
    per note type, one link syntax, one way to mark a note superseded, one
    way to mark implications. No hidden state, no app-specific metadata.
@@ -793,11 +800,25 @@ Steps for an agent:
 
 ## Index: generated, not hand-written
 
-The index is a cache, not the source of truth. By default it is
+The index is a derived database, not a proprietary one, and not
+the authoritative source. By default it is
 sharded by year: one file per year, `index-<year>.json`
 (`index-2026.json`, etc.), each with the shape below, plus a root
 `index.json` that is a manifest only — it lists the year shards,
 their note counts, and freshness, not the full note entries.
+
+**Rebuild contract.** The index is built from the `.md` files, and
+only from them. It is rebuildable at any time, from scratch, with
+no other input. The `.md` files are the authoritative source; the
+index is the query source — the thing agents actually search, filter,
+and follow links through at scale. On any conflict between an index
+entry and its `.md` file, the `.md` file wins and the index entry is
+regenerated. Before trusting an index entry for a citation, run the
+freshness check below. Conflicts are never merged — discard and
+regenerate. A stale index must never, on its own, produce an empty
+answer — fall back to maps, then to file reads, per Index protocol.
+Calling the index "a cache" does not change what it is in practice:
+at scale, what the index contains is what an agent can find.
 It is maintained according to the recorded index decision for this
 vault (see Index protocol above). If it is corrupted or a future tool
 does not like JSON, rebuild it from the .md files, using the method
@@ -1147,7 +1168,8 @@ days or weeks, is the cadence and the proposing, so a backlog of
 - [ ] Source separated from take, confidence and provenance in body.
 - [ ] Superseded notes kept, marked, linked to replacement.
 - [ ] README updated when a rule changes.
-- [ ] No proprietary database as source of truth.
+- [ ] No proprietary database as source of truth; index is a derived
+  database, rebuildable from .md files, .md wins on conflict.
 - [ ] Index regenerable from .md files.
 
 ## Before you push: check, flag, hold
