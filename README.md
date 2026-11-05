@@ -181,6 +181,58 @@ Zettelkasten covers semantic best. It does not, by itself, cover episodic
 or procedural well. This system adds those layers with different templates,
 not by forcing them into permanent notes.
 
+## Why this is fast — speed and token usage
+
+This is a fairly performant way to do things, for two reasons:
+speed, and token usage. Both come from the same choice: plain
+files on a local filesystem, read selectively.
+
+**Speed: filesystem reads are fast, and local.**
+
+There is no database server to start, no network round-trip, no
+API to call, and no binary format to parse. A note is a small
+text file on disk. Reading it is a local filesystem read, usually
+milliseconds, and the operating system keeps recently-read files
+in RAM — the page cache — so the second read is even faster.
+An agent that needs a note reads that file, not a whole database.
+An agent that needs to find a note reads the index manifest,
+then one per-year index shard, then the top few notes — not the
+whole vault. There is nothing to index on the fly, nothing to
+migrate, and nothing to wait on over a network, unless you
+choose to sync or push to GitHub yourself.
+
+**Token usage: an agent's context is its working memory.**
+
+For an AI agent, the context window is roughly its RAM: everything
+it reads stays in that working memory for the session, and every
+word it reads costs tokens. Reading everything would be expensive
+— a naive full-vault scan at 100 notes is on the order of 65,000
+tokens per query — and it also degrades reasoning, even when
+tokens are cheap, because the agent has to sift through noise.
+
+This system is designed to keep that working set small:
+
+- The agent reads this README once per session, then only the
+  spec file for the task it is doing.
+- It reads maps first, then the index manifest, then only the
+  year shard(s) relevant to that query, then only the top N notes
+  — direct hits first, supporting notes second, implications
+  third.
+- A normal query is on the order of 5,000–10,000 tokens in,
+  not the whole vault. The first pull, or a first indexing run,
+  is a one-time spike — that is expected, and it is not the
+  per-query cost.
+- The index is small JSON, sharded by year by default, with a
+  manifest that lists shards instead of full entries, so the
+  agent never has to load a 50–100 MB index to find one note.
+
+The tradeoff is honest: a human, or an agent with no code
+execution, maintains the index by hand, slowly. That is the
+cost of having no database server and no required tooling.
+What you get in return is a system that is fast to read, cheap
+to query, and does not burn tokens — or time — reading files
+it does not need.
+
 ## Best way to do this — creator's preferred approach, not a requirement
 
 The best way to use this, in the creator's view, is with some form
