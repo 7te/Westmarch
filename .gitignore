@@ -7,7 +7,9 @@ Thumbs.db
 *.swo
 *~
 
-# NOTE: index.json is deliberately NOT ignored here yet.
-# Whether it is committed or gitignored is tied to the index-builder
-# design, which is still open. Do not add it here until that decision
-# is made, or a fresh clone will lose its index with no way to rebuild it.
+# NOTE: index.json is deliberately NOT ignored here.
+# Decision (2026-11-04): index.json IS committed, with a freshness
+# check before trusting it (see README, Index section). Do not add
+# it here — a fresh clone must keep its shared index, and an agent
+# with no code execution must be able to use it after checking it
+# against the .md files it cites.

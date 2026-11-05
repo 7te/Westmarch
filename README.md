@@ -555,6 +555,50 @@ does not like JSON, rebuild it from the .md files, using the method
 recorded in that decision — or, if no decision exists yet, run the
 index protocol first and record one.
 
+### Index is committed, with a freshness check
+
+`index.json` **is** committed, and is deliberately **not** in
+`.gitignore`. That is a decision, not an oversight, made for the
+cold-agent case: a fresh clone, or an agent with no code execution,
+benefits from a shared index built by a previous agent, instead of
+starting from an empty index and scanning every file. Committing it
+is what makes that sharing work.
+
+Committing it does not make it the source of truth, and it does not
+make it trustworthy on sight. An agent must run a freshness check
+before trusting it:
+
+- Compare the index against the notes on disk for the notes it
+  intends to cite: id, file path, and `updated` date must match the
+  actual `.md` frontmatter. If a cited note mismatches, verify from
+  the `.md` file, and treat the index entry as stale.
+- If the index's note count, or its list of ids, does not match
+  the notes on disk overall, treat the index as stale, not as
+  complete. A stale index must never, on its own, produce an empty
+  answer — fall back to maps, then to file reads, per Index protocol.
+- An agent that generates an index may include a `generated`
+  timestamp / note count in it, and an agent reading it may use
+  that as a first hint, but must not rely on a timestamp alone:
+  verify cited notes against `.md` anyway.
+
+Conflicts on `index.json` are never merged:
+- In git, if `index.json` conflicts, discard both sides and
+  regenerate it from the `.md` files, then commit the regenerated
+  version. Merging two derived indexes by hand is meaningless —
+  regeneration is the only correct resolution.
+- In iCloud, if a conflicted copy appears, ignore the conflicted
+  copy, regenerate from `.md` files, and delete the conflicted
+  copy if possible. Do not cite from a conflicted index.
+- Commit `index.json` in the same commit as the `.md` changes
+  that caused it, not as separate index-only commits, except for
+  a deliberate rebuild at review. That keeps each commit's index
+  in sync with its notes, and keeps git history readable instead
+  of buried under index churn.
+- An agent with no code execution that cannot regenerate a stale
+  index may still use a committed index after the freshness check
+  for cited notes, but must flag the staleness to the human in
+  plain language, not silently trust it.
+
 Shape (one object per note, plus a terms map for keyword search):
 
 ```json
