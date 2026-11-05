@@ -101,6 +101,66 @@ rules, in full; this README holds the summary, the map, and the routing.
 Do not try to learn the system from this README alone if you are doing
 a task that has a spec file — read that spec file.
 
+## How much does it cost, and what model do you need?
+
+Short answer: about two cents a query on a mid-tier model, and
+you do not need an expensive model.
+
+A normal query is on the order of 5,000–10,000 tokens in — this
+README once per session, maps first, the index manifest, the
+relevant year shard, and the top few notes — and 500–1,000 tokens
+out, a short answer, not a full rewrite. At current rates, late
+2026, standard tier, USD per million tokens:
+
+- **Cheap model, e.g. Claude Haiku 5.5 ($0.10 in / $0.50 out):
+  ~$0.0015 per query** — about a tenth of a cent.
+- **Mid-tier model, e.g. Claude Sonnet 5.5 ($2 in / $10 out) or
+  GPT-5 ($1.25 in / $10 out): ~$0.015–$0.03 per query, call it
+  ~$0.02.**
+- **Top-tier model, e.g. Claude Opus 5.5 ($4 in / $20 out):
+  ~$0.06 per query.**
+
+With prompt caching, it is cheaper still — cached input is about
+$0.10 per million on Sonnet 5.5, so a repeated README and system
+prompt drop to near-zero, and a query is mostly the fresh notes
+plus output, roughly $0.005–$0.01.
+
+For comparison: a naive full-vault scan, about 65,000 tokens in,
+is about $0.14 on a mid-tier model — 5–10x a normal query. A
+first pull / indexing run, about 80,000 tokens in, is about
+$0.16–$0.18, one-time, not per query. A local model costs
+effectively $0 per query, just electricity.
+
+Rates change, and they vary by vendor, tier, and caching — check
+the vendor's pricing page before you put a number in a budget.
+The figures above are estimates, not guarantees, and they assume
+the selective retrieval in "Why this is fast" above. If an agent
+reads the whole vault every time, it will cost more.
+
+**You do not need an expensive model for this.** Westmarch is
+mostly retrieval, summarising, and following instructions: read
+the maps, find the hits, check the frontmatter, propose a note
+in the right format, link it correctly. That is not hard
+reasoning, coding, or maths.
+
+- A cheap model is fine for routine work: answering a question
+  from notes, finding a note, drafting a proposal, checking a
+  format. That is most queries.
+- A mid-tier model is the sweet spot for review, promotion
+  decisions, granularity calls, supersession, and contested
+  topics — where judgement matters a bit more, and following a
+  long spec precisely matters.
+- A top-tier model is overkill. You would pay 3–5x more for
+  almost no gain on this task. The human is the editor at
+  review, so an error gets caught anyway.
+
+The quality that matters here is not model size, it is following
+the README. A cheap model that reads the spec file for its task
+will beat an expensive model that skims it. A local small model
+can do the retrieval work for free; it may just be sloppier at
+the fiddly bits — link typing, provenance, exact values — so
+have a human, or a mid-tier model, check its proposals.
+
 ## Sensitive information: assume it could become public
 
 Treat anything you put in this vault — especially if you push it to
